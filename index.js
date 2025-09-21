@@ -1,10 +1,9 @@
-// index.js (النسخة المطورة)
-
 const express = require("express");
 const admin = require("firebase-admin");
 const fetch = require("node-fetch");
 
-// ... (بقية إعدادات express و PORT)
+const app = express();                 // ✅ لازم
+const PORT = process.env.PORT || 3000; // ✅ مهم لـ Render
 
 // ✅ صفحة فحص
 app.get("/status", (req, res) => {
