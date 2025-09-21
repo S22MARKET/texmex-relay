@@ -100,3 +100,29 @@ console.log("🚀 texmex-relay شغال...");
 app.listen(PORT, () => {
   console.log(`🌍 Listening on port ${PORT}`);
 });
+
+
+
+async function sendOneSignalNotification({ title, message, data }) {
+  const body = {
+    app_id: ONE_SIGNAL_APP_ID,
+    headings: { en: title, ar: title },
+    contents: { en: message, ar: message },
+    included_segments: ["All"],      // أو استخدم include_player_ids: ["PLAYER_ID"]
+    android_channel_id: "order_channel", // 🟢 هذا السطر يربط الإشعار بالقناة
+    data: data || {}
+  };
+
+  const res = await fetch("https://onesignal.com/api/v1/notifications", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Basic ${ONE_SIGNAL_REST_KEY}`
+    },
+    body: JSON.stringify(body)
+  });
+
+  const result = await res.json();
+  if (!res.ok) console.error("❌ خطأ OneSignal:", result);
+  return result;
+}
